@@ -6,8 +6,6 @@ name = "pypi"
 [packages]
 pandas = "*"
 pytest = "*"
-psycopg2-binary = "*"
-python-dotenv = "*"
 flask = "*"
 
 [dev-packages]
