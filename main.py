@@ -1,11 +1,6 @@
 import sqlite3
-import threading
-import webbrowser
 
 import pandas as pd
-from flask import Flask, render_template_string
-
-app = Flask(__name__)
 
 # STEP 1B
 # Connect to the database
@@ -72,10 +67,12 @@ df_short_title = pd.read_sql("""
 
 # STEP 8
 # Calculate the total amount for all orders
-sum_total_price = pd.read_sql("""
-    SELECT ROUND(priceEach * quantityOrdered) AS total_price
-    FROM orderDetails
-""", conn).sum()
+sum_total_price = [
+    pd.read_sql("""
+        SELECT ROUND(priceEach * quantityOrdered) AS total_price
+        FROM orderDetails
+    """, conn).iloc[:, 0].sum()
+]
 
 
 # STEP 9
@@ -94,8 +91,9 @@ df_day_month_year = pd.read_sql("""
 conn.close()
 
 
-@app.route("/")
 def index():
+    from flask import render_template_string
+
     results = [
         ("Employee numbers and last names", df_first_five),
         ("Last names and employee numbers", df_five_reverse),
@@ -103,7 +101,7 @@ def index():
         ("Executive roles", df_executive),
         ("Last-name lengths", df_name_length),
         ("Short job titles", df_short_title),
-        ("Total order amount", sum_total_price.to_frame().T),
+        ("Total order amount", pd.DataFrame({"total_price": sum_total_price})),
         ("Order dates", df_day_month_year),
     ]
     return render_template_string(
@@ -148,11 +146,10 @@ def index():
 
 
 if __name__ == "__main__":
+    from flask import Flask
+
+    app = Flask(__name__)
+    app.add_url_rule("/", view_func=index)
     url = "http://127.0.0.1:5000"
-
-    def open_browser():
-        if not webbrowser.open_new_tab(url):
-            print(f"Could not open a browser automatically. Visit {url}")
-
-    threading.Timer(1, open_browser).start()
+    print(f"Open this address in your browser: {url}")
     app.run(host="127.0.0.1", port=5000, debug=False, use_reloader=False)
