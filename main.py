@@ -152,4 +152,4 @@ if __name__ == "__main__":
     app.add_url_rule("/", view_func=index)
     url = "http://127.0.0.1:5000"
     print(f"Open this address in your browser: {url}")
-    app.run(host="127.0.0.1", port=5000, debug=False, use_reloader=False)
+    app.run(host="127.0.0.1", port=5000, debug=True)
