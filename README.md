@@ -20,7 +20,7 @@ Example:
 df_answer = pd.read_sql("""SELECT * FROM some_table""", connection)
 ```
 
-Start by running `pipenv install` and `pipenv shell`. You can run the test suite at any time to check your work with `pytest` or `pytest -x` if you want to just run 1 test at a time. Run `python3 main.py` to start the local results page. Open the printed address (usually `http://127.0.0.1:5000`) in your browser; in VS Code Remote, use the forwarded port if needed. Stop the server with Ctrl+C.
+Start by running `pipenv install` and `pipenv shell`. You can run the test suite at any time to check your work with `pytest` or `pytest -x` if you want to just run 1 test at a time. Run `python3 main.py` to execute the SQL queries; inspect the result DataFrames in a debugger or print them as you work.
 
 ### Step 1
 
